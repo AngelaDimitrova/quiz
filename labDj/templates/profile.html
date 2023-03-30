@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <style>
+        img {
+            width: 20rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="http://127.0.0.1:8000/profile">My Profile</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://127.0.0.1:8000/posts/">Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://127.0.0.1:8000/blockedUsers/">Blocked List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://127.0.0.1:8000/add/post/">Add new Post</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
+            <img src="{{ MEDIA_URL }}{{ user_info.first.profile_pic.url }}" alt="Profile Picture"
+                 class="rounded-circle">
+            <h1>{{ user_info.first.user_model.first_name }}
+                {{ user_info.first.user_model.last_name }}
+            </h1>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-5">
+            {% if userSkills %}
+                <h3 class="text-center">My skills:</h3>
+                <ul class="text-center">
+                    {% for skill in userSkills %}
+                        <li style="list-style: none">{{ skill }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-5">
+            {% if userInterests %}
+                <h3>My skills:</h3>
+                <ul>
+                    {% for i in userInterests %}
+                        <li>{{ i }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+    {% if  user_info.first.profession %}
+        <div>My profession: {{ user_info.first.profession }}</div>
+    {% else %}
+        <div> No profession</div>
+    {% endif %}
+
+    <h3>My posts:</h3>
+    <div class="row d-flex justify-content-start align-items-center">
+        {% for post in user_posts %}
+            <div class="card mb-3 mx-1" style="width: 22rem; height: 20rem;">
+                <div class="text-start fs-6">
+                    Author :
+                    {{ post.author.user_model.first_name }}
+                </div>
+                <div class="text-center fs-5 fw-bold">
+                    {{ post.title }}
+                </div>
+                <div class="text-center">
+                    Desccription :
+                    {{ post.desc }}
+                </div>
+                <div>
+                    {% if post.file.url != null %}
+                        <img src="{{ MEDIA_URL }}{{ post.file.url }}" alt="Post img">
+                    {% else %}
+                        <div>No file</div>
+                    {% endif %}
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
